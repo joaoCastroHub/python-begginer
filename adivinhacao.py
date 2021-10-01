@@ -1,30 +1,53 @@
-print("*********************************")
-print("Bem vindo ao jogo de adivinhacao!")
-print("*********************************")
+import random
 
-numero_secreto = 42
-total_tentativas = 3
-rodada = 1;
+def jogar():
+    print("*********************************")
+    print("Bem vindo ao jogo de adivinhacao!")
+    print("*********************************")
 
-while(rodada <= total_tentativas):
-    print("tentativa {} de {} ".format(rodada, total_tentativas))
-    chute_str = input("Digite o seu numero: ")
-    print("voce digitou ", chute_str)
-    chute = int(chute_str)
+    numero_secreto = random.randrange(1,101)
+    total_tentativas = 0
+    pontos = 1000
 
-    acertou = chute == numero_secreto
-    maior   = chute > numero_secreto
-    menor   = chute < numero_secreto
+    print("Qual o nível de dificuldade?")
+    print("(1) fácil (2) medio (3) difícil")
 
-    if (acertou):
-        print("Voce acertou!")
+    nivel = int(input("Defina o nível: "))
+
+    if(nivel == 1):
+        total_tentativas = 20
+    elif(nivel == 2):
+        total_tentativas = 10
     else:
-        if(maior):
-            print("Você errou! O seu numero foi maior do que o numero secreto.")
-        elif(menor):
-            print("Você errou! O seu numero foi menor do que o numero secreto.")
+        total_tentativas = 5
 
-    rodada = rodada + 1
+    for rodada in range(1, total_tentativas + 1):
+        print("tentativa {} de {} ".format(rodada, total_tentativas))
 
+        chute_str = input("Digite um numero entre 1 e 100: ")
+        print("voce digitou ", chute_str)
+        chute = int(chute_str)
 
-print("Fim do jogo")
+        if (chute < 1 or chute > 100):
+            print("Você deve digitar um numero entre 1 e 100")
+            continue
+
+        acertou = chute == numero_secreto
+        maior   = chute > numero_secreto
+        menor   = chute < numero_secreto
+
+        if (acertou):
+            print("Voce acertou! sua pontuacao foi {}".format(pontos))
+            break
+        else:
+            if(maior):
+                print("Você errou! O seu numero foi maior do que o numero secreto.")
+            elif(menor):
+                print("Você errou! O seu numero foi menor do que o numero secreto.")
+            pontos_perdidos = abs(numero_secreto - chute)
+            pontos = pontos - pontos_perdidos
+
+    print("Fim do jogo")
+
+if(__name__== "__main__"):
+    jogar()
